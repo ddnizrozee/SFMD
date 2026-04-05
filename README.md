@@ -1,6 +1,6 @@
 # ✰ Supercell Fankit MassDownloader ✰
 
-![rwPXcahMHeLb8Vy2oFYD](https://github.com/user-attachments/assets/c30e0d1c-1117-4823-84b7-ccded9d24896)
+![Pin-SpecialAnim](https://github.com/user-attachments/assets/1647be53-aa1b-41f8-866a-52acb7d942d8)
 
 ### ***!!! This material is unofficial and is not endorsed by Supercell. For more information see Supercell's Fan Content Policy: www.supercell.com/fan-content-policy. !!!***
 
