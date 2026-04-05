@@ -1,0 +1,114 @@
+async function ripFankit() {
+    console.clear();
+    console.log("Scraping started! Do NOT touch the page...");
+
+    const assets = new Map();
+    const seen = new Set();
+    let stalls = 0;
+    let lastSize = 0;
+
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    while (stalls < 40) {
+        const els = document.querySelectorAll('img, [style*="background-image"]');
+        
+        if (els.length) {
+            els[els.length - 1].scrollIntoView({ behavior: 'instant', block: 'end' });
+            window.scrollBy(0, 2000);
+        }
+
+        for (const el of els) {
+            let src = el.src || el.getAttribute('data-src');
+            if (!src && el.style.backgroundImage) {
+                src = el.style.backgroundImage.slice(4, -1).replace(/["']/g, "");
+            }
+            
+            if (!src || !/frontify|supercell|amazon/.test(src)) continue;
+
+            const cleanUrl = src.split('?')[0];
+            if (assets.has(cleanUrl)) continue;
+
+            let name = "";
+            let curr = el;
+
+            // find name in parent tree
+            for (let i = 0; i < 6 && curr; i++) {
+                curr = curr.parentElement;
+                const texts = Array.from(curr.querySelectorAll('span, div, p, h1, h2, h3'))
+                    .map(e => e.innerText?.trim())
+                    .filter(t => t && t.length > 2 && t.length < 50 && !t.includes('\n'));
+                
+                const exact = texts.find(t => /\.(png|jpe?g|svg|mp4|gif|mov)$/i.test(t));
+                if (exact) { name = exact; break; }
+                if (texts.length > 0 && i > 1) { name = texts[0]; break; }
+            }
+
+            name = name || "asset";
+
+            // clean string (human way)
+            let safeName = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9.\-_]/g, '_')
+                .replace(/_+/g, '_')
+                .toLowerCase();
+
+            let ext = cleanUrl.split('.').pop().toLowerCase();
+            if (ext.length > 4 || !/^[a-z0-9]+$/.test(ext)) ext = "png";
+
+            if (!safeName.endsWith(`.${ext}`)) {
+                safeName = safeName.replace(/\.\w{3,4}$/, '') + `.${ext}`;
+            }
+
+            let base = safeName.slice(0, safeName.lastIndexOf('.'));
+            let count = 1;
+            while (seen.has(safeName)) {
+                safeName = `${base}_${count++}.${ext}`;
+            }
+            
+            seen.add(safeName);
+            assets.set(cleanUrl, safeName);
+        }
+
+        console.clear();
+        console.log(`files found: ${assets.size}`);
+
+        if (assets.size === lastSize) {
+            stalls++;
+            console.log(`waiting... (${stalls}/40)`);
+            if (stalls % 5 === 0) {
+                window.scrollBy(0, -1500);
+                await sleep(200);
+                window.scrollBy(0, 2000);
+            }
+        } else {
+            stalls = 0;
+            lastSize = assets.size;
+        }
+
+        await sleep(400);
+    }
+
+    console.clear();
+    if (assets.size < 100) {
+        console.log("error: Not enough files found. Make sure the page is being scrolled automatically. If not, first rerun the script. If it also fails, then scroll manually.");
+        return;
+    }
+    
+    console.log(`✰ done! building bat file for ${assets.size} files... ✰`);
+
+    let bat = "@echo off\nchcp 65001\necho downloading!... ✰\n\n";
+    
+    for (const [url, filename] of assets.entries()) {
+        const safeUrl = encodeURI(url).replace(/%/g, '%%');
+        bat += `curl -# -f -L -o "${filename}" "${safeUrl}" || echo "[ error :( ] failed: ${filename}" >> failed.txt\n`;
+    }
+    
+    bat += "\necho.\necho ✰ done! ✰\npause\n";
+
+    const blob = new Blob([bat], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "fankit_massdownloader.bat";
+    a.click();
+}
+
+ripFankit();
