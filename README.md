@@ -10,6 +10,8 @@
 ## 🔨 HOW TO USE?? 🔨
 
   # 1. 📖 Open the [Supercell Fankit](https://fankit.supercell.com/hub/62). Choose the game you want to download the assets of.
+   (If you open the link by clicking the "Supercell Fankit" text, you must click the search bar twice then click enter to enter if it says "403 Forbidden")
+  
    <img width="1871" height="967" alt="image" src="https://github.com/user-attachments/assets/ce8095b8-833e-47e1-870b-26c300ebcbef" />
 
   # 2. 📖 Open the Inspect Elements page.
