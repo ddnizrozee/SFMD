@@ -14,6 +14,7 @@
 
   # 2. Open the Inspect Elements page.
    (F12 or Ctrl + Shift + I (If that doesn't work, then right-click on an empty part of the page and click "Inspect".)) 
+   
    <img width="192" height="241" alt="image" src="https://github.com/user-attachments/assets/137272a3-53f4-468c-8f4e-a97947ce9bf9" />
 
   # 3. Open the console tab
