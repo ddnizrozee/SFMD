@@ -22,6 +22,7 @@
 
   # 4. Type 'allow pasting' in the console and then press enter.
    (DO NOT DO THIS ON ANY OTHER PAGE UNLESS THE CODE IS BOTH OPEN-SOURCE AND TRUSTED. OPEN SOURCE DOESN'T ALWAYS MEAN IT'S SAFE. YOU CAN CHECK THE SFMD CODE IF YOU ARE SUSPICIOUS)
+   
    <img width="558" height="578" alt="image" src="https://github.com/user-attachments/assets/f11d4cf7-53f1-4705-979f-2b88e530c0f2" />
 
   # 5. Paste the SFMD.txt file's content in the console
@@ -37,6 +38,7 @@
 
   # 9. Put the .bat file in a folder like in the image and finally run the bat.
    (The images will be downloaded in the folder the .bat file is in! So don't put th script in the Downloads folder (or put it there, doesn't really matter to me)
+   
    <img width="114" height="24" alt="image" src="https://github.com/user-attachments/assets/e4a6c5c7-c22a-42a8-b10e-46c9fa412f5d" />
 
   
